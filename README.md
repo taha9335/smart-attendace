@@ -1,53 +1,48 @@
+# Smart Attendance
 
-# Face Recognition Attendance System 
+A Python and Flask prototype for webcam face recognition and daily attendance tracking. OpenCV detects faces, a locally supplied model predicts labels, and attendance records are stored in CSV files.
 
-## Description
-Software for Industry , where they can track the attendence of their employee with the help of face recognition using OpenCV library.
+## Current status
 
-## Table of Contents
-- [Project Plan](#project-plan)
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
+This repository contains the backend and face detector, but it is **not yet a complete runnable demo**. The application references `templates/home.html` and `static/face_recognition_model.pkl`; neither is included in the current checkout. A registration and model-training workflow is also not implemented in `app.py`.
 
-## Project Plan
-- Task:
-  - [x] Create a home page
-  - [x] Show attendence log on home for particular day
-  - [ ] Recreate a HTML , bootstrap boilerplate and remove unwanted code
-  - [ ] Show date and day on home page
-  - [ ] Company name should be visible on home page
-  - [ ] Show list of total Employee on home page
-  - [ ] Create a Admin panel
-  - [ ] Give various rights to admin 
-  - [ ] Work on UI
+## Implemented behavior
 
-## Features
-- Adding a New User
+- Stream webcam frames through `/video_feed` using the server's camera.
+- Detect faces with the bundled Haar cascade.
+- Load a local recognition model when available.
+- Record a recognized user's name, ID, and time in a daily CSV.
+- Avoid duplicate attendance entries for the same user ID on the same day.
 
--	Capturing Live Images
+## Stack
 
--	To understand the Total number of Users in Database
-  
--	Click on Take Attendance 
+Python, Flask, OpenCV, NumPy, pandas, and joblib.
 
--	Multiple User Faces can be detected
+## Development setup
 
--	Attendance of Multiple Users taken
+1. Clone this repository and open its root directory.
+2. Create a Python virtual environment and install `requirements.txt`.
+3. Supply `templates/home.html` and a compatible, trusted recognition model at `static/face_recognition_model.pkl`.
+4. Ensure the machine running Flask has a working webcam.
+5. Run `python app.py` and open `http://127.0.0.1:1000/`.
 
--	Attendance of Users displayed
+The model must accept flattened 50 × 50 colour face crops and return labels in `Name_ID` format. The app creates its attendance and face-data directories automatically.
 
-## Installation
-- Explain how to install or set up the project.
+## Repository layout
 
-## Usage
-- this is useful in tracking the attendence of your employees
+| Path | Purpose |
+| --- | --- |
+| `app.py` | Flask routes, video streaming, recognition, and CSV recording |
+| `haarcascade_frontalface_default.xml` | Face detection cascade |
+| `confusionmatrix.py` | Evaluation helper script |
+| `requirements.txt` | Python dependency list |
+
+## Limitations and next steps
+
+The app tracks one detected label in shared process state, so it is not designed for independent simultaneous camera sessions. Complete the missing UI and training workflow before presenting it as an end-to-end demo. Authentication, configuration of the Flask secret, and deployment hardening remain future work; debug mode is enabled in the current entry point.
+
+Use consented sample data for demonstrations and keep face images, trained identity models, and attendance records out of public commits.
 
 ## Contributing
-- Contributers are welcomed, you can simply fork the repo and contribute , and make PR
-- Dont wait for getting issue assigned to you
-## License
-- Include information about the project's license.
 
+Contributions that complete the setup, improve the interface, or document reproducible evaluation are welcome. Describe the change and how it was checked in your pull request.
